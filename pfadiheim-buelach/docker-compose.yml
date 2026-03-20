@@ -6,6 +6,7 @@ services:
     image: kirby-apache:latest
     container_name: pfadiheim-web
     restart: unless-stopped
+    init: true    
     volumes:
       - ./www:/var/www/site
     security_opt:

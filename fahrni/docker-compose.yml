@@ -5,6 +5,7 @@ services:
       dockerfile: Dockerfile
     image: kirby-apache:latest
     container_name: fahrni-web
+    init: true
     restart: unless-stopped
     volumes:
       - ./www:/var/www/site
