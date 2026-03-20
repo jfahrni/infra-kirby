@@ -31,11 +31,14 @@ for SITE_PATH in "$SITES_DIR"/*/; do
         LINK_DEST_OPT="--link-dest=$LATEST"
     fi
 
-    # Directories to back up
+    # Directories and files to back up (everything not in git)
     SOURCES=()
-    [ -d "$WWW/content" ]          && SOURCES+=("$WWW/content")
-    [ -d "$WWW/site/accounts" ]    && SOURCES+=("$WWW/site/accounts")
-    [ -d "$WWW/storage/accounts" ] && SOURCES+=("$WWW/storage/accounts")
+    [ -d "$WWW/content" ]              && SOURCES+=("$WWW/content")
+    [ -d "$WWW/public/media" ]         && SOURCES+=("$WWW/public/media")
+    [ -d "$WWW/media" ]                && SOURCES+=("$WWW/media")
+    [ -d "$WWW/site/accounts" ]        && SOURCES+=("$WWW/site/accounts")
+    [ -d "$WWW/storage/accounts" ]     && SOURCES+=("$WWW/storage/accounts")
+    [ -f "$WWW/site/config/.license" ] && SOURCES+=("$WWW/site/config/.license")
 
     if [ ${#SOURCES[@]} -eq 0 ]; then
         log "SKIP $SITE: keine relevanten Verzeichnisse gefunden"
