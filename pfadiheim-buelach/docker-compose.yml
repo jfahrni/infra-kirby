@@ -1,0 +1,27 @@
+services:
+  pfadiheim:
+    build:
+      context: ../kirby
+      dockerfile: Dockerfile
+    image: kirby-apache:latest
+    restart: unless-stopped
+    volumes:
+      - ./www:/var/www/site
+    security_opt:
+      - no-new-privileges:true
+    networks:
+      - traefik
+      - pfadiheim-internal
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.pfadiheim.rule=Host(`new.pfadiheim-buelach.ch`)"
+      - "traefik.http.routers.pfadiheim.entrypoints=websecure"
+      - "traefik.http.routers.pfadiheim.tls.certresolver=letsencrypt"
+      - "traefik.http.services.pfadiheim.loadbalancer.server.port=80"
+      - "traefik.docker.network=traefik"
+
+networks:
+  traefik:
+    external: true
+  pfadiheim-internal:
+    internal: true

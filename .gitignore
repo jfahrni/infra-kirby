@@ -1,0 +1,6 @@
+# Site-Inhalte werden in separaten Repos verwaltet
+pfadiheim-buelach/www/
+fahrni/www/
+
+# Claude Code
+.claude/
