@@ -1,7 +1,7 @@
 services:
   pfadiheim:
     build:
-      context: ../kirby
+      context: ../apache
       dockerfile: Dockerfile
     image: kirby-apache:latest
     restart: unless-stopped

@@ -1,12 +1,12 @@
 services:
   fahrni:
     build:
-      context: ../kirby
+      context: ../apache
       dockerfile: Dockerfile
     image: kirby-apache:latest
     restart: unless-stopped
     volumes:
-      - .:/var/www/site
+      - ./www:/var/www/site
     security_opt:
       - no-new-privileges:true
     networks:
@@ -14,7 +14,7 @@ services:
       - fahrni-internal
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.fahrni.rule=Host(`www.fahrni.ch`)"
+      - "traefik.http.routers.fahrni.rule=Host(`new.fahrni.ch`)"
       - "traefik.http.routers.fahrni.entrypoints=websecure"
       - "traefik.http.routers.fahrni.tls.certresolver=letsencrypt"
       - "traefik.http.services.fahrni.loadbalancer.server.port=80"
