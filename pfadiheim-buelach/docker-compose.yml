@@ -25,17 +25,24 @@ services:
       - "traefik.http.routers.pfadiheim.tls.certresolver=letsencrypt"
       - "traefik.http.services.pfadiheim.loadbalancer.server.port=80"
 
-    # HTTPS ü-Domain → 301 auf Master
-      - "traefik.http.routers.pfadiheim-idn.rule=Host(`www.xn--pfadiheim-blach-9vb.ch`)"
+    # Nackte Domain → www (301)
+      - "traefik.http.routers.pfadiheim-bare.rule=Host(`pfadiheim-buelach.ch`)"
+      - "traefik.http.routers.pfadiheim-bare.entrypoints=websecure"
+      - "traefik.http.routers.pfadiheim-bare.tls.certresolver=letsencrypt"
+      - "traefik.http.routers.pfadiheim-bare.middlewares=to-www@docker"
+      - "traefik.http.routers.pfadiheim-bare.service=pfadiheim@docker"
+
+    # HTTPS ü-Domains → 301 auf Master (www + nackte Domain)
+      - "traefik.http.routers.pfadiheim-idn.rule=Host(`www.xn--pfadiheim-blach-9vb.ch`) || Host(`xn--pfadiheim-blach-9vb.ch`)"
       - "traefik.http.routers.pfadiheim-idn.entrypoints=websecure"
       - "traefik.http.routers.pfadiheim-idn.tls.certresolver=letsencrypt"
-      - "traefik.http.routers.pfadiheim-idn.middlewares=to-ascii@docker"
+      - "traefik.http.routers.pfadiheim-idn.middlewares=to-www@docker"
       - "traefik.http.routers.pfadiheim-idn.service=pfadiheim@docker"
 
-    # Middleware: ü-Domain → ASCII-Domain
-      - "traefik.http.middlewares.to-ascii.redirectregex.regex=.*"
-      - "traefik.http.middlewares.to-ascii.redirectregex.replacement=https://www.pfadiheim-buelach.ch"
-      - "traefik.http.middlewares.to-ascii.redirectregex.permanent=true"
+    # Middleware: Redirect alles auf www.pfadiheim-buelach.ch
+      - "traefik.http.middlewares.to-www.redirectregex.regex=.*"
+      - "traefik.http.middlewares.to-www.redirectregex.replacement=https://www.pfadiheim-buelach.ch"
+      - "traefik.http.middlewares.to-www.redirectregex.permanent=true"
 
 networks:
   traefik:
