@@ -4,3 +4,4 @@ fahrni/www/
 
 # Claude Code
 .claude/
+.playwright-mcp/
